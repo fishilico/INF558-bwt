@@ -11,6 +11,7 @@ import java.io.OutputStream;
 public abstract class StreamBlockAlgorithm {
     /**
      * Transform a block of data
+     * 
      * @param data
      * @param size
      * @param out
@@ -21,6 +22,7 @@ public abstract class StreamBlockAlgorithm {
 
     /**
      * Transform a stream of data
+     * 
      * @param in
      * @param out
      * @param block_size
@@ -53,6 +55,7 @@ public abstract class StreamBlockAlgorithm {
 
     /**
      * Do the transformation according to the parameters
+     * 
      * @param args
      * @throws IOException
      */
