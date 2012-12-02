@@ -3,11 +3,11 @@
  * 
  * @param <E>
  */
-public final class IntArrayTuple<E> {
+public final class IntByteArrayTuple {
     public int integer;
-    public E[] array;
+    public byte[] array;
 
-    public IntArrayTuple(int i, E[] a) {
+    public IntByteArrayTuple(int i, byte[] a) {
         integer = i;
         array = a;
     }

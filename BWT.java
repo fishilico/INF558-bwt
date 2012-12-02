@@ -12,16 +12,16 @@ public class BWT extends StreamBlockAlgorithm {
      * 
      * @param data
      * @param size
-     * @return tuple (index of original, Byte[] compressed data)
+     * @return tuple (index of original, byte[] compressed data)
      */
-    public IntArrayTuple<Byte> compress(final byte[] data, int size) {
+    public IntByteArrayTuple compress(final byte[] data, int size) {
         assert (data != null && size > 0);
 
         final Integer[] indexes = getSortedCyclicShift(data, size);
         assert (indexes.length == size);
 
         // Compute index of the original string (I in BW article)
-        IntArrayTuple<Byte> result = new IntArrayTuple<Byte>(-1, new Byte[size]);
+        IntByteArrayTuple result = new IntByteArrayTuple(-1, new byte[size]);
         for (int j = 0; j < indexes.length; j++) {
             if (indexes[j] == 0) {
                 result.integer = j;
@@ -30,7 +30,7 @@ public class BWT extends StreamBlockAlgorithm {
         }
         assert (result.integer >= 0 && result.integer < indexes.length);
         for (int j = 0; j < indexes.length; j++) {
-            result.array[j] = new Byte(data[(indexes[j] + size - 1) % size]);
+            result.array[j] = data[(indexes[j] + size - 1) % size];
         }
         return result;
     }
@@ -41,7 +41,7 @@ public class BWT extends StreamBlockAlgorithm {
         assert (data != null && size > 0);
 
         // Get compressed data
-        IntArrayTuple<Byte> intArray = compress(data, size);
+        IntByteArrayTuple intArray = compress(data, size);
 
         // Write I in the same number of bytes as size, Little Endianess
         for (int i = intArray.integer, sz = size; sz > 0; sz >>= 8, i >>= 8) {
@@ -49,9 +49,7 @@ public class BWT extends StreamBlockAlgorithm {
         }
 
         // Write data (L)
-        for (byte b : intArray.array) {
-            out.write(b);
-        }
+        out.write(intArray.array);
     }
 
     /**
