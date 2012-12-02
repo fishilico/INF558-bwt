@@ -1,0 +1,9 @@
+Projet d'informatique du cours INF558 de théorie de l'information
+
+Sujet : https://www.rocq.inria.fr/secret/Jean-Pierre.Tillich/enseignement/X2012/liste-projets/node8.html
+
+Implémentation de l'algorithme décrit dans cet article :
+http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-124.pdf
+
+Et utilisation de l'article suivant :
+http://marknelson.us/1996/09/01/bwt/
