@@ -43,10 +43,9 @@ public class BWT extends StreamBlockAlgorithm {
         // Get compressed data
         IntByteArrayTuple intArray = compress(data, size);
 
-        // Write I in the same number of bytes as size, Little Endianess
-        for (int i = intArray.integer, sz = size; sz > 0; sz >>= 8, i >>= 8) {
-            out.write(i & 0xff);
-        }
+        // Write I in the 2 bytes Little Endian
+        out.write(intArray.integer & 0xff);
+        out.write((intArray.integer >> 8) & 0xff);
 
         // Write data (L)
         out.write(intArray.array);

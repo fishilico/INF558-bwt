@@ -18,7 +18,9 @@ public class UnBWT extends StreamBlockAlgorithm {
      */
     public byte[] uncompress(final int origIdx, final byte[] data,
             final int size, final int offset) {
-        assert (data != null && origIdx >= 0 && origIdx < size && offset >= 0 && offset < size);
+        assert (data != null);
+        assert (origIdx >= 0 && origIdx < size);
+        assert (offset >= 0 && offset < size);
         // Compute uncompressed size
         int unsize = size - offset;
         int[] charCounter = new int[256];
@@ -50,16 +52,13 @@ public class UnBWT extends StreamBlockAlgorithm {
     }
 
     @Override
-    public void transformBlock(byte[] data, int size, OutputStream out)
-            throws IOException {
+    public void transformBlock(final byte[] data, final int size,
+            OutputStream out) throws IOException {
+        assert (data != null && size <= data.length);
         // Read origin index
-        int origIdx = 0;
-        int j = 0;
-        for (int sz = size; sz > 0; sz >>= 8, j++) {
-            origIdx |= (((int) data[j]) & 0xff) << (8 * j);
-        }
+        int origIdx = (data[0] & 0xff) | ((data[1] & 0xff) << 8);
         // Get and write uncompressed data
-        out.write(uncompress(origIdx, data, size, j));
+        out.write(uncompress(origIdx, data, size, 2));
     }
 
     /**
@@ -68,8 +67,8 @@ public class UnBWT extends StreamBlockAlgorithm {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        // an index in 256 bytes is encoded in 1 byte
-        new UnBWT().doTransform(args, 256 + 1);
+        // index in 2 bytes-long
+        new UnBWT().doTransform(args, 256 + 2);
     }
 
 }
