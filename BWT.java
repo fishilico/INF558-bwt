@@ -55,7 +55,10 @@ public class BWT extends StreamBlockAlgorithm {
                 int i2 = o2.intValue();
                 // Compare at most size bytes, in a cyclic way
                 for (int j = 0; j < size; j++) {
-                    final int c = Byte.compare(data[i1], data[i2]);
+                    // Unsigned comparaison
+                    final int d1 = (data[i1] >= 0 ? data[i1] : 256 + data[i1]);
+                    final int d2 = (data[i1] >= 0 ? data[i2] : 256 + data[i2]);
+                    final int c = Integer.compare(d1, d2);
                     if (c != 0) {
                         return c;
                     }
