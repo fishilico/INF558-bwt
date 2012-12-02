@@ -6,10 +6,10 @@ die() {
 }
 
 # Test files from input
-for INFILE in *.in.txt
+for INFILE in *.in
 do
-    FILEPREFIX="${INFILE%.in.txt}"
-    OUTFILE="$FILEPREFIX.out.txt"
+    FILEPREFIX="${INFILE%.in}"
+    OUTFILE="$FILEPREFIX.out"
     TMPFILE="$FILEPREFIX.tmp"
     [ -r "$OUTFILE" ] || die "Unable to read $OUTFILE"
     java -cp .. BWT "$INFILE" "$TMPFILE" || die "Java failed"
