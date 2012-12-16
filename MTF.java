@@ -5,14 +5,18 @@ import java.io.OutputStream;
  * Move To Front compressor
  */
 public class MTF extends StreamBlockAlgorithm {
+	
     private byte[] compress(final byte[] data, int size) {
         byte[] result = new byte[size];
-        MTFList charmap = MTFList.buildMTFList(255);
-        MTFList current;
+        MTFList charMap = MTFList.buildMTFList(255);
 
         for(int i = 0; i < size; i ++) {
-            result[i] = charmap.get(data[i]);
-            charmap = charmap.moveToFront();
+        	if(i <= 1) {
+        		result[i] = data[i];
+        	} else {
+	            result[i] = charMap.get(data[i]);
+	            charMap = charMap.moveToFront();
+        	}
         }
 
         return result;
