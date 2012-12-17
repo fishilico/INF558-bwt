@@ -31,6 +31,6 @@ public class MTF extends StreamBlockAlgorithm {
     }
 
     public static void main(String[] args) throws IOException {
-        new MTF().doTransform(args, 258);
+        new MTF().doTransform(args, 0x1002);
     }
 }

@@ -68,7 +68,7 @@ public class UnBWT extends StreamBlockAlgorithm {
      */
     public static void main(String[] args) throws IOException {
         // index in 2 bytes-long
-        new UnBWT().doTransform(args, 256 + 2);
+        new UnBWT().doTransform(args, 0x1002);
     }
 
 }

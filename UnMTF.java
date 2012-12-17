@@ -36,7 +36,7 @@ public class UnMTF extends StreamBlockAlgorithm {
      */
     public static void main(String[] args) throws IOException {
         // index in 2 bytes-long
-        new UnMTF().doTransform(args, 256 + 2);
+        new UnMTF().doTransform(args, 0x1002);
     }
 
 }

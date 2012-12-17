@@ -30,7 +30,7 @@ public class BWT extends StreamBlockAlgorithm {
         }
         assert (result.integer >= 0 && result.integer < indexes.length);
         for (int j = 0; j < indexes.length; j++) {
-            assert(indexes[j] != null);
+            assert (indexes[j] != null);
             result.array[j] = data[(indexes[j] + size - 1) % size];
         }
         return result;
@@ -61,6 +61,23 @@ public class BWT extends StreamBlockAlgorithm {
      */
     private Integer[] getSortedCyclicShift(final byte[] data, final int size) {
         assert (data != null && size > 0);
+
+        // Test wether there is always the same number
+        boolean isSame = true;
+        for (byte b : data) {
+            if (b != data[0]) {
+                isSame = false;
+                break;
+            }
+        }
+        if (isSame) {
+            // Return an array with 0..(size-1)
+            Integer[] indexes = new Integer[size];
+            for (int i = 0; i < size; i++) {
+                indexes[i] = i;
+            }
+            return indexes;
+        }
 
         // Cyclic shifted strings comparator
         final Comparator<Integer> suffixCmp = new Comparator<Integer>() {
@@ -100,6 +117,6 @@ public class BWT extends StreamBlockAlgorithm {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        new BWT().doTransform(args, 256);
+        new BWT().doTransform(args, 0x1000);
     }
 }
