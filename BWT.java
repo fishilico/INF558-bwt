@@ -30,6 +30,7 @@ public class BWT extends StreamBlockAlgorithm {
         }
         assert (result.integer >= 0 && result.integer < indexes.length);
         for (int j = 0; j < indexes.length; j++) {
+            assert(indexes[j] != null);
             result.array[j] = data[(indexes[j] + size - 1) % size];
         }
         return result;
@@ -79,7 +80,8 @@ public class BWT extends StreamBlockAlgorithm {
                     i1 = (i1 + 1) % size;
                     i2 = (i2 + 1) % size;
                 }
-                return 0;
+                // By default, compare integers
+                return Integer.compare(i1, i2);
             }
         };
 
