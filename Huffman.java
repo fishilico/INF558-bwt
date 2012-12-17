@@ -35,6 +35,7 @@ public class Huffman {
         out.write((byte) input.length);
 
         t.encode(input, out);
+        out.flush();
     }
 
     /**

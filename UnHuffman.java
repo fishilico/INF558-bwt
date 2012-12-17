@@ -19,6 +19,7 @@ public class UnHuffman {
         HuffmanTree t = HuffmanTree.buildFromOccurenceMap(occur);
 
         t.decode(data, 1028, size, out);
+        out.flush();
     }
 
     public static void main(String[] args) throws IOException {
