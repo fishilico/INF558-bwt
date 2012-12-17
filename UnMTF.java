@@ -1,29 +1,22 @@
 import java.io.IOException;
 import java.io.OutputStream;
 
-
 public class UnMTF extends StreamBlockAlgorithm {
-	
-    public byte[] uncompress(final byte[] data,
-            final int size, final int offset) {
+
+    public byte[] uncompress(final byte[] data, final int size) {
         assert (data != null);
-        assert (offset >= 0 && offset < size);
-        
+
         // Uncompress
         byte[] undata = new byte[size];
-
         MTFList charMap = MTFList.buildMTFList(255);
-        
-        for(int i = 0; i < size; i++) {
-            if(i <= 1) {
-        	    undata[i] = data[i];
-        	}
-        	else {
+        for (int i = 0; i < size; i++) {
+            if (i <= 1) {
+                undata[i] = data[i];
+            } else {
                 undata[i] = charMap.getByteAt(data[i]);
                 charMap = charMap.moveToFront();
             }
         }
-        
         return undata;
     }
 
@@ -31,9 +24,9 @@ public class UnMTF extends StreamBlockAlgorithm {
     public void transformBlock(final byte[] data, final int size,
             OutputStream out) throws IOException {
         assert (data != null && size <= data.length);
-        
+
         // Get and write uncompressed data
-        out.write(uncompress(data, size, 2));
+        out.write(uncompress(data, size));
     }
 
     /**
