@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 public class HuffmanTree {
 	public char value;
 	public int weight;
-	private HuffmanTree left, right;
+	public HuffmanTree left, right;
 	private boolean[][] encodingTable;
 	
 	private HuffmanTree(char ch, int wght) {
@@ -20,6 +20,7 @@ public class HuffmanTree {
 		left = l;
 		right = r;
 		weight = l.weight + r.weight;
+		value = l.value;
 	}
 	
 	private void buildEncodingTable() {
@@ -34,7 +35,7 @@ public class HuffmanTree {
 	private void buildEncodingTable(boolean[][] table, boolean[] prefix, int prefixLength) {
 		if(left == null) {
 			table[value] = new boolean[prefixLength];
-			for(int i = 0; i < prefixLength; i++) table[value][prefixLength - 1 - i] = prefix[255 - i];
+			for(int i = 0; i < prefixLength; i++) table[value][i] = prefix[255 - i];
 			return;
 		}
 		prefix[255 - prefixLength] = false;
@@ -80,6 +81,27 @@ public class HuffmanTree {
     				nextbyte = 0;
     			}
     		}
+    	}
+    }
+    
+    public void decode(char[] cArray, int offset, OutputStream out) throws IOException {
+    	int imax = cArray.length;
+    	int byteOffset = 128;
+    	HuffmanTree position = this;
+
+    	for(int i = offset; i < imax; i++) {
+    		for(int j = 0; j < 8; j++) {
+    			if((byteOffset & cArray[i]) > 0) position = position.right;
+    			else position = position.left;
+    			
+	    		if(position.left == null) {
+	    			out.write(position.value);
+	    			position = this;
+	    		}
+	    		byteOffset >>= 1;
+
+    		}
+    		byteOffset = 128;
     	}
     }
 }
