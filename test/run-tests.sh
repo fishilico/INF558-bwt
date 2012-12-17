@@ -22,11 +22,25 @@ hexdiff() {
     fi
 }
 
+# Print file size
+echo_filesize() {
+	SIZE=$(ls -l "$1" |cut -d' ' -f5)
+	if [ $# -ge 2 ]
+	then
+		INSIZE=$(ls -l "$2" |cut -d' ' -f5)
+		PERCENT=$(($SIZE*100/$INSIZE))
+		echo -n "[$SIZE $PERCENT%] "
+	else
+		echo -n "[$SIZE] "
+	fi
+}
+
 # Run tests on one input
 run_tests() {
     FILEPREFIX="$1"
     INFILE="$2"
     echo -n "Testing $FILEPREFIX..."
+    echo_filesize "$INFILE"
 
     # Buid a set of temporary files
     BWTFILE="$FILEPREFIX.bwt.tmp"
@@ -39,6 +53,7 @@ run_tests() {
     # Testing BWT, there may be a .out testing file
     echo -n "BWT..."
     java -ea -cp .. BWT "$INFILE" "$BWTFILE" || die "Java BWT failed with $INFILE"
+    echo_filesize "$BWTFILE" "$INFILE"
     OUTFILE="$FILEPREFIX.out"
     if [ -r "$OUTFILE" ]
     then
@@ -51,6 +66,7 @@ run_tests() {
     # Testing MTF
     echo -n "MTF..."
     java -ea -cp .. MTF "$BWTFILE" "$MTFFILE" || die "Java MTF failed with $BWTFILE"
+    echo_filesize "$MTFFILE" "$INFILE"
     echo -n "UnMTF..."
     java -ea -cp .. UnMTF "$MTFFILE" "$UNMTFFILE" || die "Java UnMTF failed with $BTFFILE"
     hexdiff "$BWTFILE" "$UNMTFFILE" || die "Bad UnMTF output for $BWTFILE"
@@ -58,11 +74,12 @@ run_tests() {
     # Testing Huffman
     echo -n "Huffman..."
     java -ea -cp .. Huffman "$MTFFILE" "$HUFFFILE" || die "Java MTF failed with $MTFFILE"
+    echo_filesize "$HUFFFILE" "$INFILE"
     echo -n "UnHuffman..."
     java -ea -cp .. UnHuffman "$HUFFFILE" "$UNHUFFFILE" || die "Java UnMTF failed with $HUFFFILE"
     hexdiff "$MTFFILE" "$UNHUFFFILE" || die "Bad UnMTF output for $MTFFILE"
 
-    echo "$FILEPREFIX OK"
+    echo "OK"
     rm -f "$BWTFILE" "$UNBWTFILE"
     rm -f "$MTFFILE" "$UNMTFFILE"
     rm -f "$HUFFFILE" "$UNHUFFFILE"
@@ -81,4 +98,5 @@ do
     INFILE="$FILEPREFIX.in.tmp"
     head -c $SIZE /dev/urandom > "$INFILE"
     run_tests "$FILEPREFIX" "$INFILE"
+    rm "$INFILE"
 done
