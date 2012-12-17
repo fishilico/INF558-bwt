@@ -91,6 +91,12 @@ do
     run_tests "${INFILE%.in}" "$INFILE"
 done
 
+# Test calgary files
+for INFILE in calgary/*.in
+do
+    run_tests "${INFILE%.in}" "$INFILE"
+done
+
 # Test random input
 for SIZE in 100 500 1000 10000 100000
 do
